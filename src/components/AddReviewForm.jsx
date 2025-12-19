@@ -13,7 +13,7 @@ function AddReviewForm({ movieId, onReviewAdded }) {
       comment: comment
     };
 
-    const response = await fetch("http://localhost:8080/reviews", {
+    const response = await fetch("https://springboot-first.onrender.com/reviews", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(reviewData)

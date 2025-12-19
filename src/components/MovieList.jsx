@@ -7,7 +7,7 @@ function MovieList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8080/movies")
+    fetch("https://springboot-first.onrender.com/movies")
       .then((res) => res.json())
       .then((data) => setMovies(data));
   }, []);

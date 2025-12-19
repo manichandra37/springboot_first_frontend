@@ -9,7 +9,7 @@ function MovieList() {
 
   const fetchMovies = async () => {
     try {
-      const res = await fetch("http://localhost:8080/movies");
+      const res = await fetch("https://springboot-first.onrender.com/movies");
       const data = await res.json();
       setMovies(data);
     } catch (err) {
