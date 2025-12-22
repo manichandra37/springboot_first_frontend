@@ -1,61 +1,82 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AddMovieForm from "./AddMovieForm";
 
-function MovieList() {
-  const [movies, setMovies] = useState([]);
-  const [search, setSearch] = useState("");
+function AddMovieForm() {
+  const [title, setTitle] = useState("");
+  const [genre, setGenre] = useState("");
+  const [releaseYear, setReleaseYear] = useState("");
   const navigate = useNavigate();
 
-  const fetchMovies = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const movieData = {
+      title,
+      genre,
+      releaseYear: Number(releaseYear),
+    };
+
     try {
-      const res = await fetch("https://springboot-first.onrender.com/movies");
-      const data = await res.json();
-      setMovies(data);
-    } catch (err) {
-      console.error("Error fetching movies", err);
+      const response = await fetch("https://springboot-first.onrender.com/movies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(movieData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add movie");
+      }
+
+      alert("Movie added 🎉");
+      navigate("/"); // go back to movie list
+    } catch (error) {
+      console.error(error);
+      alert("Error adding movie 😭");
     }
   };
 
-  useEffect(() => {
-    fetchMovies();
-  }, []);
-
-  const filteredMovies = movies.filter((m) =>
-    m.title.toLowerCase().includes(search.toLowerCase())
-  );
-
   return (
-    <div className="movie-list-container">
-      {/* Add Movie */}
-      <AddMovieForm onMovieAdded={fetchMovies} />
+    <div className="add-movie-form">
+      <h2>Add Movie</h2>
 
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="Search movies..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="search-input"
-      />
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Title</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
 
-      {/* Movie Cards */}
-      <div className="movie-list">
-        {filteredMovies.map((movie) => (
-          <div
-            key={movie.movieId}
-            className="movie-card"
-            onClick={() => navigate(`/movie/${movie.movieId}`)}
-          >
-            <h3>{movie.title}</h3>
-            <p>
-              {movie.genre} • {movie.releaseYear}
-            </p>
-          </div>
-        ))}
-      </div>
+        <div className="form-group">
+          <label>Genre</label>
+          <input
+            type="text"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Release Year</label>
+          <input
+            type="number"
+            value={releaseYear}
+            onChange={(e) => setReleaseYear(e.target.value)}
+            required
+          />
+        </div>
+
+        {/* 🔥 THIS IS THE BUTTON YOU WERE MISSING */}
+        <button type="submit">Add Movie</button>
+      </form>
     </div>
   );
 }
 
-export default MovieList;
+export default AddMovieForm;

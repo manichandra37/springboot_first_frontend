@@ -10,7 +10,7 @@ function MovieDetails() {
 
   // Fetch movie details
   useEffect(() => {
-    fetch(`http://localhost:8080/movies/${id}`)
+    fetch(`https://springboot-first.onrender.com/movies/${id}`)
       .then((res) => res.json())
       .then((data) => setMovie(data))
       .catch((err) => console.error("Movie fetch error:", err));
@@ -18,7 +18,7 @@ function MovieDetails() {
 
   // Fetch reviews for this movie
   const fetchReviews = () => {
-    fetch(`http://localhost:8080/reviews/movie/${id}`)
+    fetch(`https://springboot-first.onrender.com/reviews/movie/${id}`)
       .then((res) => res.json())
       .then((data) => setReviews(data))
       .catch((err) => console.error("Review fetch error:", err));
