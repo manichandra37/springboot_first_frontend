@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import AddReviewForm from "./AddReviewForm";
 
 function MovieDetails() {
@@ -17,18 +17,18 @@ function MovieDetails() {
   }, [id]);
 
   // Fetch reviews for this movie
-  const fetchReviews = () => {
+  const fetchReviews = useCallback(() => {
     fetch(`https://springboot-first.onrender.com/reviews/movie/${id}`)
       .then((res) => res.json())
       .then((data) => setReviews(data))
       .catch((err) => console.error("Review fetch error:", err));
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchReviews();
-  }, [id]);
+  }, [fetchReviews]);
 
-  if (!movie) return <p>Loading movie...</p>;
+  if (!movie) return <p style={{ color: '#b3b3b3' }}>Loading movie...</p>;
 
   return (
     <div className="details-container">
@@ -42,7 +42,7 @@ function MovieDetails() {
   
       <div className="review-list">
         {reviews.length === 0 ? (
-          <p>No reviews found.</p>
+          <p style={{ color: '#b3b3b3' }}>No reviews found.</p>
         ) : (
           reviews.map((review) => (
             <div key={review.id} className="review-card">

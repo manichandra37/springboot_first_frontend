@@ -13,18 +13,23 @@ function AddReviewForm({ movieId, onReviewAdded }) {
       comment: comment
     };
 
-    const response = await fetch("https://springboot-first.onrender.com/reviews", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reviewData)
-    });
+    try {
+      const response = await fetch("https://springboot-first.onrender.com/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reviewData)
+      });
 
-    if (response.ok) {
-      alert("Review added! 🎉");
-      setRating("");
-      setComment("");
-      onReviewAdded(); // reload reviews
-    } else {
+      if (response.ok) {
+        alert("Review added! 🎉");
+        setRating("");
+        setComment("");
+        onReviewAdded(); // reload reviews
+      } else {
+        alert("Failed to add review 😭");
+      }
+    } catch (error) {
+      console.error("Error adding review:", error);
       alert("Failed to add review 😭");
     }
   };
