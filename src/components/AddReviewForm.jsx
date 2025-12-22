@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_BASE_URL } from "../api";
 
 function AddReviewForm({ movieId, onReviewAdded }) {
   const [rating, setRating] = useState("");
@@ -14,7 +15,7 @@ function AddReviewForm({ movieId, onReviewAdded }) {
     };
 
     try {
-      const response = await fetch("https://springboot-first.onrender.com/reviews", {
+      const response = await fetch(`${API_BASE_URL}/reviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reviewData)

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import AddReviewForm from "./AddReviewForm";
+import { API_BASE_URL } from "../api";
 
 function MovieDetails() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ function MovieDetails() {
 
   // Fetch movie details
   useEffect(() => {
-    fetch(`https://springboot-first.onrender.com/movies/${id}`)
+    fetch(`${API_BASE_URL}/movies/${id}`)
       .then((res) => res.json())
       .then((data) => setMovie(data))
       .catch((err) => console.error("Movie fetch error:", err));
@@ -18,7 +19,7 @@ function MovieDetails() {
 
   // Fetch reviews for this movie
   const fetchReviews = useCallback(() => {
-    fetch(`https://springboot-first.onrender.com/reviews/movie/${id}`)
+    fetch(`${API_BASE_URL}/reviews/movie/${id}`)
       .then((res) => res.json())
       .then((data) => setReviews(data))
       .catch((err) => console.error("Review fetch error:", err));

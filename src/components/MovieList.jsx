@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { API_BASE_URL } from "../api";
 
 function MovieList() {
   const [movies, setMovies] = useState([]);
@@ -9,7 +10,7 @@ function MovieList() {
   const location = useLocation();
 
   const fetchMovies = () => {
-    fetch("https://springboot-first.onrender.com/movies")
+    fetch(`${API_BASE_URL}/movies`)
       .then((res) => res.json())
       .then((data) => {
         setMovies(data);
@@ -26,7 +27,7 @@ function MovieList() {
     const reviewPromises = moviesList.map(async (movie) => {
       try {
         const response = await fetch(
-          `https://springboot-first.onrender.com/reviews/movie/${movie.movieId}`
+          `${API_BASE_URL}/reviews/movie/${movie.movieId}`
         );
         const reviews = await response.json();
         

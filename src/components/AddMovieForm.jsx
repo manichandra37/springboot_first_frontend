@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../api";
 
 function AddMovieForm() {
   const [title, setTitle] = useState("");
@@ -17,7 +18,7 @@ function AddMovieForm() {
     };
 
     try {
-      const response = await fetch("https://springboot-first.onrender.com/movies", {
+      const response = await fetch(`${API_BASE_URL}/movies`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
