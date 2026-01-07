@@ -28,7 +28,7 @@ function App() {
       {/* Main Content */}
       <div className="content">
         <Routes>
-          <Route path="/" element={<p style={{ color: '#b3b3b3', fontSize: '18px' }}>Select a movie to begin</p>} />
+          <Route path="/" element={<p>Select a movie to begin</p>} />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/add-movie" element={<AddMovieForm />} />
         </Routes>

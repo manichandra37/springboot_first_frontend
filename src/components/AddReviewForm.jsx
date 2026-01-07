@@ -47,6 +47,7 @@ function AddReviewForm({ movieId, onReviewAdded }) {
           max="5"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
+          required
         />
       </div>
   
@@ -55,6 +56,7 @@ function AddReviewForm({ movieId, onReviewAdded }) {
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
+          required
         ></textarea>
       </div>
   

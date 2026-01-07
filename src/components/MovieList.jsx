@@ -9,18 +9,7 @@ function MovieList() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchMovies = useCallback(() => {
-    fetch(`${API_BASE_URL}/movies`)
-      .then((res) => res.json())
-      .then((data) => {
-        setMovies(data);
-        // Fetch reviews for all movies
-        fetchAllMovieRatings(data);
-      })
-      .catch((err) => console.error("Error fetching movies:", err));
-  }, []);
-
-  const fetchAllMovieRatings = async (moviesList) => {
+  const fetchAllMovieRatings = useCallback(async (moviesList) => {
     const ratings = {};
     
     // Fetch reviews for each movie
@@ -29,6 +18,9 @@ function MovieList() {
         const response = await fetch(
           `${API_BASE_URL}/reviews/movie/${movie.movieId}`
         );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const reviews = await response.json();
         
         if (reviews && reviews.length > 0) {
@@ -46,7 +38,23 @@ function MovieList() {
 
     await Promise.all(reviewPromises);
     setMovieRatings(ratings);
-  };
+  }, []);
+
+  const fetchMovies = useCallback(() => {
+    fetch(`${API_BASE_URL}/movies`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setMovies(data);
+        // Fetch reviews for all movies
+        fetchAllMovieRatings(data);
+      })
+      .catch((err) => console.error("Error fetching movies:", err));
+  }, [fetchAllMovieRatings]);
 
   useEffect(() => {
     fetchMovies();
@@ -90,7 +98,10 @@ function MovieList() {
                   </span>
                 )}
               </div>
-              <p>{movie.genre} • {movie.releaseYear}</p>
+              <div className="movie-card-meta">
+                <span className="movie-genre">🎭 {movie.genre}</span>
+                <span className="movie-year">📅 {movie.releaseYear}</span>
+              </div>
             </div>
           );
         })}
