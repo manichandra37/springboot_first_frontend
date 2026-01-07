@@ -27,24 +27,14 @@ function AddMovieForm() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error("API Error:", response.status, errorData);
-        throw new Error(errorData.message || `Failed to add movie: ${response.status}`);
+        throw new Error("Failed to add movie");
       }
 
-      const result = await response.json();
-      console.log("Movie added successfully:", result);
       alert("Movie added 🎉");
-      
-      // Reset form
-      setTitle("");
-      setGenre("");
-      setReleaseYear("");
-      
       navigate("/"); // go back to movie list
     } catch (error) {
-      console.error("Error adding movie:", error);
-      alert(`Error adding movie: ${error.message}`);
+      console.error(error);
+      alert("Error adding movie 😭");
     }
   };
 

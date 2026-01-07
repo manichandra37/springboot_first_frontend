@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { API_BASE_URL } from "../api";
 
@@ -9,7 +9,7 @@ function MovieList() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchMovies = () => {
+  const fetchMovies = useCallback(() => {
     fetch(`${API_BASE_URL}/movies`)
       .then((res) => res.json())
       .then((data) => {
@@ -18,7 +18,7 @@ function MovieList() {
         fetchAllMovieRatings(data);
       })
       .catch((err) => console.error("Error fetching movies:", err));
-  };
+  }, []);
 
   const fetchAllMovieRatings = async (moviesList) => {
     const ratings = {};
@@ -50,14 +50,14 @@ function MovieList() {
 
   useEffect(() => {
     fetchMovies();
-  }, []);
+  }, [fetchMovies]);
 
   // Refresh movies when navigating back to home
   useEffect(() => {
     if (location.pathname === "/") {
       fetchMovies();
     }
-  }, [location.pathname]);
+  }, [location.pathname, fetchMovies]);
 
   const filteredMovies = movies.filter((movie) =>
     movie.title?.toLowerCase().includes(search.toLowerCase())

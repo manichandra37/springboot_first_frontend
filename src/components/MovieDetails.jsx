@@ -29,7 +29,7 @@ function MovieDetails() {
     fetchReviews();
   }, [fetchReviews]);
 
-  if (!movie) return <p style={{ color: '#b3b3b3' }}>Loading movie...</p>;
+  if (!movie) return <p>Loading movie...</p>;
 
   return (
     <div className="details-container">
@@ -43,7 +43,7 @@ function MovieDetails() {
   
       <div className="review-list">
         {reviews.length === 0 ? (
-          <p style={{ color: '#b3b3b3' }}>No reviews found.</p>
+          <p>No reviews found.</p>
         ) : (
           reviews.map((review) => (
             <div key={review.id} className="review-card">
