@@ -31,7 +31,10 @@ function MovieDetails() {
         }
         return res.json();
       })
-      .then((data) => setReviews(data))
+      .then((data) => {
+        console.log("Reviews data:", data); // Debug: see what backend returns
+        setReviews(data);
+      })
       .catch((err) => console.error("Review fetch error:", err));
   }, [id]);
 
@@ -83,6 +86,9 @@ function MovieDetails() {
               }
             };
 
+            // Get reviewer name from various possible field names (check reviewerName first since that's what backend uses)
+            const reviewerName = review.reviewerName || review.createdBy || review.author || review.name || review.userName || "Anonymous";
+            
             return (
               <div key={review.id} className="review-card">
                 <div className="review-header">
@@ -91,12 +97,12 @@ function MovieDetails() {
                     <span className="rating-value">{review.rating}</span>
                   </div>
                   <div className="review-meta">
-                    {review.createdBy && (
-                      <span className="review-author">👤 {review.createdBy}</span>
-                    )}
-                    {(review.createdAt || review.createdTime || review.timestamp) && (
+                    <span className="review-author">
+                      👤 {reviewerName}
+                    </span>
+                    {(review.createdAt || review.createdTime || review.timestamp || review.date) && (
                       <span className="review-date">
-                        🕒 {formatDate(review.createdAt || review.createdTime || review.timestamp)}
+                        🕒 {formatDate(review.createdAt || review.createdTime || review.timestamp || review.date)}
                       </span>
                     )}
                   </div>

@@ -67,6 +67,21 @@ function MovieList() {
     }
   }, [location.pathname, fetchMovies]);
 
+  // Listen for review added events to refresh ratings
+  useEffect(() => {
+    const handleReviewAdded = () => {
+      // Refresh ratings for all movies when a review is added
+      if (movies.length > 0) {
+        fetchAllMovieRatings(movies);
+      }
+    };
+
+    window.addEventListener('reviewAdded', handleReviewAdded);
+    return () => {
+      window.removeEventListener('reviewAdded', handleReviewAdded);
+    };
+  }, [movies, fetchAllMovieRatings]);
+
   const filteredMovies = movies.filter((movie) =>
     movie.title?.toLowerCase().includes(search.toLowerCase())
   );
