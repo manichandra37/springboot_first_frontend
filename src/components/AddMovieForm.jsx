@@ -27,14 +27,17 @@ function AddMovieForm() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add movie");
+        const errorText = await response.text();
+        console.error("API Error:", response.status, errorText);
+        throw new Error(`Failed to add movie: ${response.status} ${errorText || response.statusText}`);
       }
 
       alert("Movie added 🎉");
       navigate("/"); // go back to movie list
     } catch (error) {
-      console.error(error);
-      alert("Error adding movie 😭");
+      console.error("Error details:", error);
+      const errorMessage = error.message || "Unknown error";
+      alert(`Error adding movie 😭\n\n${errorMessage}\n\nCheck console for details.`);
     }
   };
 
